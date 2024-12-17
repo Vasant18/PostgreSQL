@@ -10,5 +10,8 @@
     "@types/pg": "^8.10.2",
     "dotenv": "^16.4.7",
     "pg": "^8.11.3"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
   }
 }
