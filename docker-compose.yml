@@ -1,0 +1,59 @@
+
+# services:
+#   app:
+#     build: .
+#     depends_on:
+#       - postgres
+#     env_file:
+#       - .env
+#     volumes:
+#       - .:/app
+#       - /app/node_modules
+#     ports:
+#       - "3000:3000"
+#     command: ["node", "dist/create-table.js"]
+
+#   postgres:
+#     image: "postgres:17.2"
+#     ports:
+#       - "5432:5432"
+#     environment:
+#       - POSTGRES_USER=${POSTGRES_USER}
+#       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+#       - POSTGRES_DB=${POSTGRES_DB}
+#     volumes:
+#       - pg-data:/var/lib/postgresql/data
+# volumes:
+#   pg-data:
+
+
+
+# docker-compose.yml
+
+services:
+  postgres:
+    image: "postgres:17.2"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    command: ["sh", "-c", "until nc -z postgres 5432; do echo waiting for postgres; sleep 2; done; node dist/create-table.js"]
+
+volumes:
+  pg-data:
